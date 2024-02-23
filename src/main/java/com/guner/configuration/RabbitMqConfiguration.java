@@ -40,11 +40,17 @@ public class RabbitMqConfiguration {
                 .with(routingKeySingle);
     }
 
+    /*
+    mandatory for message conversion.
+    if not defined, below error occurs
+    "message": "SimpleMessageConverter only supports String, byte[] and Serializable payloads, received: com.guner.model.ChargingRecord",
+     */
     @Bean
     public MessageConverter converter() {
         return new Jackson2JsonMessageConverter();
     }
 
+    // sadece MessageConverter bean tanımı da yeterli, rabbitTemplate kullanmak için amqpTemplate tanımı zorunlu değil
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
